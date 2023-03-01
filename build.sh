@@ -1,0 +1,1 @@
+gcc -Wall -Wextra -o dgemv dgemv.c
