@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
-#include <util/xmalloc.h> 
+//#include <util/xmalloc.h> 
 #include <inttypes.h>
-#include <omp.h>
+#include "omp.h"
 
 int m, n;
 
@@ -39,9 +39,9 @@ void run_parallel()
 {
 	double *a, *b, *c;
 
-	a = xmalloc(sizeof(*a) * n * m);
-	b = xmalloc(sizeof(*b) * n);
-	c = xmalloc(sizeof(*c) * m);
+	a = malloc(sizeof(*a) * n * m);
+	b = malloc(sizeof(*b) * n);
+	c = malloc(sizeof(*c) * m);
 
 	for (int i = 0; i < m; i++)
 	{
@@ -76,9 +76,9 @@ void run_serial()
 {
 	double *a, *b, *c;
 
-	a = xmalloc(sizeof(*a) * m * n);
-	b = xmalloc(sizeof(*b) * n);
-	c = xmalloc(sizeof(*c) * m);
+	a = malloc(sizeof(*a) * m * n);
+	b = malloc(sizeof(*b) * n);
+	c = malloc(sizeof(*c) * m);
 
 	for (int i = 0; i < m; i++)
 	{
