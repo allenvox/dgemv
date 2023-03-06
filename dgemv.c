@@ -17,8 +17,9 @@ double wtime()
 /* matrix_vector_product_omp: Compute matrix-vector product c[m] = a[m][n] * b[n] */
 void matrix_vector_product_omp(double *a, double *b, double *c, int m, int n)
 {
-	#pragma omp parallel
+	#pragma omp parallel //num_threads(8)
 	{
+		//printf("Hello, multithreaded world: thread %d of %d\n", omp_get_thread_num(), omp_get_num_threads());
 		int nthreads = omp_get_num_threads();
 		int threadid = omp_get_thread_num();
 		int items_per_thread = m / nthreads;
