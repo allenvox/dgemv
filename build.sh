@@ -1,1 +1,1 @@
-gcc -Wall -Wextra -o dgemv dgemv.c
+gcc -fopenmp -o dgemv dgemv.c
