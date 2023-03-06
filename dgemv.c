@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
-//#include <util/xmalloc.h> 
 #include <inttypes.h>
 #include "omp.h"
 
@@ -19,18 +18,16 @@ void matrix_vector_product_omp(double *a, double *b, double *c, int m, int n)
 {
 	#pragma omp parallel //num_threads(8)
 	{
-		//printf("Hello, multithreaded world: thread %d of %d\n", omp_get_thread_num(), omp_get_num_threads());
 		int nthreads = omp_get_num_threads();
 		int threadid = omp_get_thread_num();
+		//printf("Thread %d of %d\n", threadid, nthreads);
 		int items_per_thread = m / nthreads;
 		int lb = threadid * items_per_thread;
 		int ub = (threadid == nthreads - 1) ? (m - 1) : (lb + items_per_thread - 1);
 		for (int i = lb; i <= ub; i++)
 		{
-			c[i] = 0.0; // Store – запись в память
+			c[i] = 0.0;
 			for (int j = 0; j < n; j++)
-			// 4 обращения к памяти: Load c[i], Load a[i][j], Load b[j], Store c[i]
-			// 2 арифметические операции + и *
 				c[i] = c[i] + a[i * n + j] * b[j];
 		}
 	}
@@ -99,8 +96,6 @@ void run_serial()
 	free(c);
 }
 
-//#define MAXMEM 8000000000
-
 int main(int argc, char **argv)
 {
 	if (argc != 3)
@@ -111,21 +106,6 @@ int main(int argc, char **argv)
 
 	m = atoi(argv[1]);
 	n = atoi(argv[2]);
-	
-/*	#pragma omp parallel for 
-	for (int i = 50000; i < 99999; ++i)
-	{
-		for (int j = 1; j < 99000; ++j)
-		{
-			if ((MAXMEM - i * j + i + j) <100) 
-				printf("%d %d\n", i, j);
-	
-		//	else
-		//		if (i * j + i + j > MAXMEM)
-		//			break;
-		}
-	//	printf("%d\n",i);
-	}*/
 
 	printf("MATRIX = %d\n", m * n);
 	printf("Matrix-vector product (c[m] = a[m, n] * b[n]; m = %d, n = %d)\n", m, n);
